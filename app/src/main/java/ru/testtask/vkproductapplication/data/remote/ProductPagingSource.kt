@@ -20,7 +20,7 @@ class ProductPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Product> {
-        var page = params.key ?: 1
+        val page = params.key ?: 1
         return try {
             val prodResponse = productsApi.getProducts(limit = limit, skip = (page - 1) * limit)
             Log.d("ntw", prodResponse.limit.toString())
@@ -28,7 +28,7 @@ class ProductPagingSource(
             totalCount += prodResponse.products.size
             LoadResult.Page(
                 data = prodResponse.products,
-                nextKey = if (totalCount >= prodResponse.total) null else ++page,
+                nextKey = if (totalCount >= prodResponse.total) null else page + 1,
                 prevKey = null
             )
         } catch (e: Exception){

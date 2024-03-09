@@ -6,12 +6,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import ru.testtask.vkproductapplication.data.remote.ProductsApi
 import ru.testtask.vkproductapplication.data.repository.ProductsRepositoryImpl
 import ru.testtask.vkproductapplication.domain.repository.ProductRepository
 import ru.testtask.vkproductapplication.domain.usecases.products.GetProductList
 import ru.testtask.vkproductapplication.domain.usecases.products.ProductUseCases
+import ru.testtask.vkproductapplication.domain.usecases.products.SearchProductList
 import ru.testtask.vkproductapplication.utils.Constants.BASE_URL
 import javax.inject.Singleton
 
@@ -41,7 +41,8 @@ object AppModule {
         productRepository: ProductRepository
     ): ProductUseCases{
         return ProductUseCases(
-            getProductList = GetProductList(productRepository)
+            getProductList = GetProductList(productRepository),
+            searchProductList = SearchProductList(productRepository)
         )
     }
 }

@@ -7,4 +7,6 @@ import ru.testtask.vkproductapplication.domain.models.Product
 interface ProductRepository {
 
     fun getProductList(): Flow<PagingData<Product>>
+
+    fun getProductListBySearch(searchQuery: String): Flow<PagingData<Product>>
 }

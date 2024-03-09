@@ -7,6 +7,6 @@ import androidx.lifecycle.ViewModel
 import ru.testtask.vkproductapplication.presentation.navigation.Route
 
 class MainViewModel: ViewModel() {
-    var startDestination by mutableStateOf(Route.HomeScreen.route)
+    var startDestination by mutableStateOf(Route.Navigation.route)
         private set
 }

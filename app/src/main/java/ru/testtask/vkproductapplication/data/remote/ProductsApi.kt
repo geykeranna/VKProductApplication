@@ -11,4 +11,9 @@ interface ProductsApi {
         @Query("limit") limit: Int,
         @Query("skip") skip: Int,
     ): ProductsGetResponse
+
+    @GET("products/search")
+    suspend fun searchProducts(
+        @Query("q") searchQuery: String
+    ): ProductsGetResponse
 }

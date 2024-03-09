@@ -21,24 +21,31 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ){
-        composable(route = "HomeScreen"){
-            val viewModel: HomeScreenViewModel = hiltViewModel()
-            HomeScreen(
-                productsList = viewModel.productList.collectAsLazyPagingItems(),
-                navigate = { navigate(navController = navController, route = it) }
-            )
+        navigation(
+            route = Route.AppStartNavigation.route,
+            startDestination = Route.HomeScreen.route
+        ){
+            composable(route = Route.HomeScreen.route){
+                val viewModel: HomeScreenViewModel = hiltViewModel()
+                HomeScreen(
+                    productsList = viewModel.productList.collectAsLazyPagingItems(),
+                    navigate = { navigate(navController = navController, route = it) }
+                )
+            }
         }
 
         navigation(
-            route = Route.DetailScreen.route,
-            startDestination = Route.HomeScreen.route
-        ){
-            //
+            route = Route.Navigation.route,
+            startDestination = Route.NavigatorScreen.route
+        ) {
+            composable(route = Route.NavigatorScreen.route){
+                Navigator()
+            }
         }
     }
 }
 
-private fun navigate(navController: NavController, route: String) {
+fun navigate(navController: NavController, route: String) {
     navController.navigate(route) {
         navController.graph.startDestinationRoute?.let { route ->
             popUpTo(route) {
