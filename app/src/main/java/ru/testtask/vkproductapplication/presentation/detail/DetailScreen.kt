@@ -36,144 +36,149 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.flow.StateFlow
 import ru.testtask.vkproductapplication.R
 import ru.testtask.vkproductapplication.domain.models.Product
+import ru.testtask.vkproductapplication.presentation.components.EmptyScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     item: StateFlow<Product>,
+    state: LoadState,
     navigateBack: () -> Unit
 ) {
-    val data = item.collectAsState().value
+    if (state is LoadState.Error) EmptyScreen()
+    else {
+        val data = item.collectAsState().value
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar(
-            title = { },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = Color.Transparent,
-            ),
-            navigationIcon = {
-                IconButton(onClick = navigateBack) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            TopAppBar(
+                title = { },
+                modifier = Modifier.fillMaxWidth(),
+                colors = TopAppBarDefaults.mediumTopAppBarColors(
+                    containerColor = Color.Transparent,
+                ),
+                navigationIcon = {
+                    IconButton(onClick = navigateBack) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = "back button"
+                        )
+                    }
+                }
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(bottom = 14.dp)
+            ) {
+                Text(
+                    text = data.brand,
+                    fontSize = 24.sp,
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .padding(bottom = 5.dp, start = 20.dp)
+                )
+                Text(
+                    text = data.title,
+                    fontSize = 36.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(bottom = 5.dp, start = 20.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(start = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = "back button"
+                        modifier = Modifier.padding(end = 4.dp),
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "rating",
+                        tint = Color.Yellow
+                    )
+                    Text(text = data.rating.toString())
+                }
+            }
+
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                items(data.images.size) {
+                    AsyncImage(
+                        model = data.images[it],
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 10.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .size(400.dp)
                     )
                 }
             }
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .padding(bottom = 14.dp)
-        ) {
-            Text(
-                text = data.brand,
-                fontSize = 24.sp,
-                color = Color.Gray,
-                modifier = Modifier
-                    .padding(bottom = 5.dp, start = 20.dp)
-            )
-            Text(
-                text = data.title,
-                fontSize = 36.sp,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(bottom = 5.dp, start = 20.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .padding(start = 20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Icon(
-                    modifier = Modifier.padding(end = 4.dp),
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "rating",
-                    tint = Color.Yellow
-                )
-                Text(text = data.rating.toString())
-            }
-        }
 
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items(data.images.size) {
-                AsyncImage(
-                    model = data.images[it],
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .size(400.dp)
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 30.dp)
-                .padding(top = 25.dp)
-        ) {
-            Text(
+            Column(
                 modifier = Modifier
-                    .padding(bottom = 5.dp),
-                text = stringResource(R.string.description_label),
-                fontSize = 22.sp
-            )
-
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 20.dp),
-                text = data.description,
-                overflow = TextOverflow.Visible,
-                fontSize = 20.sp
-            )
-
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 20.dp),
-                text = "В наличии: ${data.stock}",
-                fontSize = 16.sp
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .padding(top = 20.dp)
-                .padding(horizontal = 30.dp),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier,
-                fontSize = 34.sp,
-                textAlign = TextAlign.Start,
-                text = "${data.price} $"
-            )
-
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .wrapContentSize()
+                    .fillMaxWidth()
+                    .padding(horizontal = 30.dp)
+                    .padding(top = 25.dp)
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = 10.dp),
-                    fontSize = 14.sp,
-                    text = "Добавить в корзину"
+                        .padding(bottom = 5.dp),
+                    text = stringResource(R.string.description_label),
+                    fontSize = 22.sp
                 )
+
+                Text(
+                    modifier = Modifier
+                        .padding(bottom = 20.dp),
+                    text = data.description,
+                    overflow = TextOverflow.Visible,
+                    fontSize = 20.sp
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(bottom = 20.dp),
+                    text = "В наличии: ${data.stock}",
+                    fontSize = 16.sp
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .padding(top = 20.dp)
+                    .padding(horizontal = 30.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    modifier = Modifier,
+                    fontSize = 34.sp,
+                    textAlign = TextAlign.Start,
+                    text = "${data.price} $"
+                )
+
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .wrapContentSize()
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp),
+                        fontSize = 14.sp,
+                        text = "Добавить в корзину"
+                    )
+                }
             }
         }
     }

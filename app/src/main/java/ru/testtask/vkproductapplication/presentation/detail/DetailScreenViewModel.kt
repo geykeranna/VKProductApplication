@@ -21,8 +21,19 @@ class DetailScreenViewModel @Inject constructor(
 
     private val _data = MutableStateFlow(Product.shimmerData)
 
+    val state: LoadState?
+        get() = _loadState
+
+    private var _loadState: LoadState? = null
+
     private fun getOneProduct(id: Int) = viewModelScope.launch {
-        _data.emit(productUseCases.getOneProduct(id = id).last())
+        _loadState = try {
+            _data.emit(productUseCases.getOneProduct(id = id).last())
+            LoadState.Success
+        } catch (e: Exception) {
+            LoadState.Error
+        }
+
     }
 
     fun onEvent(event: DetailEvent) {
@@ -32,4 +43,9 @@ class DetailScreenViewModel @Inject constructor(
             }
         }
     }
+}
+
+sealed class LoadState{
+    data object Error: LoadState()
+    data object Success: LoadState()
 }

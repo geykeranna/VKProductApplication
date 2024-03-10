@@ -113,5 +113,5 @@ fun parseErrorMessage(error: LoadState.Error?): String {
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun EmptyScreenPreview() {
-    EmptyContent(alphaAnim = 0.3f, message = "Internet Unavailable.",R.drawable.ic_network_error)
+    EmptyContent(alphaAnim = 0.3f, message = "Internet Unavailable.", R.drawable.ic_network_error)
 }

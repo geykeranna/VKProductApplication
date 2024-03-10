@@ -40,7 +40,6 @@ fun ProductsList(
             }
         }
     }
-
 }
 
 @Composable
