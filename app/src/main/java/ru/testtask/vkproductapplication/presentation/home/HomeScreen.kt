@@ -16,16 +16,17 @@ import ru.testtask.vkproductapplication.R
 import ru.testtask.vkproductapplication.domain.models.Product
 import ru.testtask.vkproductapplication.presentation.components.ProductsList
 import ru.testtask.vkproductapplication.presentation.components.SearchBar
-import ru.testtask.vkproductapplication.presentation.navigation.Route
 
 @Composable
 fun HomeScreen(
-    navigate:(String) -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToDetails: (Product) -> Unit,
     productsList: LazyPagingItems<Product>,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(horizontal = 10.dp)
     ) {
 
         Text(
@@ -34,27 +35,23 @@ fun HomeScreen(
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 18.dp, top = 26.dp)
+                .padding(start = 20.dp)
+                .padding(bottom = 20.dp, top = 26.dp)
         )
 
         SearchBar(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier,
             text = "",
             readOnly = true,
             onValueChange = {},
-            onClick = {
-                navigate(Route.SearchScreen.route)
-            },
+            onClick = navigateToSearch,
             onSearch = {}
         )
 
         ProductsList(
             modifier = Modifier,
             products = productsList,
-            onClick = {
-                navigate(Route.DetailScreen.route)
-            }
+            onClick = navigateToDetails
         )
     }
 }

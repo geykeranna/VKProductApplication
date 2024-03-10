@@ -3,7 +3,10 @@ package ru.testtask.vkproductapplication.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import ru.testtask.vkproductapplication.data.remote.ProductPagingSource
 import ru.testtask.vkproductapplication.data.remote.ProductsApi
 import ru.testtask.vkproductapplication.data.remote.SearchPagingSource
@@ -37,5 +40,12 @@ class ProductsRepositoryImpl(
                 )
             }
         ).flow
+    }
+
+    override fun getOneProduct(id: Int): Flow<Product> {
+        return flow {
+            val product = productsApi.getOneProducts(id)
+            emit(product)
+        }.flowOn(Dispatchers.IO)
     }
 }

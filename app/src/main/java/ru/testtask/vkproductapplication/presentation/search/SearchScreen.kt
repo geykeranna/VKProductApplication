@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
+import ru.testtask.vkproductapplication.domain.models.Product
 import ru.testtask.vkproductapplication.presentation.components.ProductsList
 import ru.testtask.vkproductapplication.presentation.components.SearchBar
 
@@ -13,6 +14,7 @@ import ru.testtask.vkproductapplication.presentation.components.SearchBar
 fun SearchScreen(
     state: SearchState,
     event: (SearchEvent) -> Unit,
+    navigateToDetails: (Product) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -33,7 +35,7 @@ fun SearchScreen(
         state.productList?.let {
             ProductsList(
                 products = it.collectAsLazyPagingItems(),
-                onClick = {}
+                onClick = navigateToDetails
             )
         }
     }

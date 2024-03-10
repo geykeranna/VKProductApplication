@@ -1,6 +1,5 @@
 package ru.testtask.vkproductapplication.data.remote
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.testtask.vkproductapplication.domain.models.Product
@@ -23,8 +22,6 @@ class ProductPagingSource(
         val page = params.key ?: 1
         return try {
             val prodResponse = productsApi.getProducts(limit = limit, skip = (page - 1) * limit)
-            Log.d("ntw", prodResponse.limit.toString())
-            Log.d("ntw", prodResponse.skip.toString())
             totalCount += prodResponse.products.size
             LoadResult.Page(
                 data = prodResponse.products,

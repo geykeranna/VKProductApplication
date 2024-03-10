@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.paging.compose.collectAsLazyPagingItems
+import ru.testtask.vkproductapplication.domain.models.Product
 import ru.testtask.vkproductapplication.presentation.home.HomeScreen
 import ru.testtask.vkproductapplication.presentation.home.HomeScreenViewModel
 
@@ -29,7 +30,13 @@ fun NavGraph(
                 val viewModel: HomeScreenViewModel = hiltViewModel()
                 HomeScreen(
                     productsList = viewModel.productList.collectAsLazyPagingItems(),
-                    navigate = { navigate(navController = navController, route = it) }
+                    navigateToSearch = { navigate(navController, Route.SearchScreen.route) },
+                    navigateToDetails = {item ->
+                        navigateToDetails(
+                            navController = navController,
+                            item = item
+                        )
+                    }
                 )
             }
         }
@@ -55,4 +62,10 @@ fun navigate(navController: NavController, route: String) {
         launchSingleTop = true
         restoreState = true
     }
+}
+fun navigateToDetails(navController: NavController, item: Product){
+    navController.currentBackStackEntry?.savedStateHandle?.set("id_product", item.id)
+    navController.navigate(
+        route = Route.DetailScreen.route
+    )
 }

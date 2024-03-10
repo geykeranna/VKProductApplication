@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.testtask.vkproductapplication.data.remote.ProductsApi
 import ru.testtask.vkproductapplication.data.repository.ProductsRepositoryImpl
 import ru.testtask.vkproductapplication.domain.repository.ProductRepository
+import ru.testtask.vkproductapplication.domain.usecases.products.GetOneProduct
 import ru.testtask.vkproductapplication.domain.usecases.products.GetProductList
 import ru.testtask.vkproductapplication.domain.usecases.products.ProductUseCases
 import ru.testtask.vkproductapplication.domain.usecases.products.SearchProductList
@@ -42,7 +43,8 @@ object AppModule {
     ): ProductUseCases{
         return ProductUseCases(
             getProductList = GetProductList(productRepository),
-            searchProductList = SearchProductList(productRepository)
+            searchProductList = SearchProductList(productRepository),
+            getOneProduct = GetOneProduct(productRepository)
         )
     }
 }

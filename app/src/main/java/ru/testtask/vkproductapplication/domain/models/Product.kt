@@ -12,4 +12,20 @@ data class Product(
     val stock: Int,
     val thumbnail: String,
     val title: String
-)
+){
+    companion object {
+        val shimmerData = Product(
+            brand = "",
+            category = "",
+            description = "",
+            discountPercentage = 0.0,
+            id = 0,
+            images = listOf(),
+            price = 0,
+            rating = 0.0,
+            stock = 0,
+            thumbnail = "",
+            title = ""
+        )
+    }
+}

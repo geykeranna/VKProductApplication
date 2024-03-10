@@ -9,4 +9,6 @@ interface ProductRepository {
     fun getProductList(): Flow<PagingData<Product>>
 
     fun getProductListBySearch(searchQuery: String): Flow<PagingData<Product>>
+
+    fun getOneProduct(id: Int): Flow<Product>
 }

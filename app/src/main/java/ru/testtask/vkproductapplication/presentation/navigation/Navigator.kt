@@ -12,6 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import ru.testtask.vkproductapplication.presentation.detail.DetailEvent
+import ru.testtask.vkproductapplication.presentation.detail.DetailScreen
+import ru.testtask.vkproductapplication.presentation.detail.DetailScreenViewModel
 import ru.testtask.vkproductapplication.presentation.home.HomeScreen
 import ru.testtask.vkproductapplication.presentation.home.HomeScreenViewModel
 import ru.testtask.vkproductapplication.presentation.search.SearchScreen
@@ -34,7 +37,15 @@ fun Navigator() {
                 val viewModel: HomeScreenViewModel = hiltViewModel()
                 HomeScreen(
                     productsList = viewModel.productList.collectAsLazyPagingItems(),
-                    navigate = { navigate(navController = navController, route = it) }
+                    navigateToSearch = {
+                        navigate(navController, Route.SearchScreen.route)
+                    },
+                    navigateToDetails = {item ->
+                        navigateToDetails(
+                            navController = navController,
+                            item = item
+                        )
+                    }
                 )
             }
             composable(route = Route.SearchScreen.route) {
@@ -43,10 +54,24 @@ fun Navigator() {
                 SearchScreen(
                     state = viewModel.state.value,
                     event = viewModel::onEvent,
+                    navigateToDetails = {item ->
+                        navigateToDetails(
+                            navController = navController,
+                            item = item
+                        )
+                    }
                 )
             }
             composable(route = Route.DetailScreen.route) {
-
+                val viewModel: DetailScreenViewModel = hiltViewModel()
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("id_product")
+                    ?.let {item ->
+                        viewModel.onEvent(DetailEvent.GetOneProduct(item))
+                        DetailScreen(
+                            item = viewModel.productData,
+                            navigateBack = { navController.navigateUp() }
+                        )
+                    }
             }
         }
     }
