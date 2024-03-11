@@ -59,6 +59,10 @@ fun handlePagingResults(
             ShimmerEffectColumn()
             false
         }
+        products.itemCount == 0 -> {
+            EmptyScreen(isEmpty = true)
+            false
+        }
         error != null -> {
             EmptyScreen()
             false

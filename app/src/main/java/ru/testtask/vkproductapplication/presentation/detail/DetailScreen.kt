@@ -1,5 +1,6 @@
 package ru.testtask.vkproductapplication.presentation.detail
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +39,9 @@ import kotlinx.coroutines.flow.StateFlow
 import ru.testtask.vkproductapplication.R
 import ru.testtask.vkproductapplication.domain.models.Product
 import ru.testtask.vkproductapplication.presentation.components.EmptyScreen
+import ru.testtask.vkproductapplication.ui.theme.AccentColor
+import ru.testtask.vkproductapplication.ui.theme.Tertiary
+import ru.testtask.vkproductapplication.ui.theme.TextColorDark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,6 +88,7 @@ fun DetailScreen(
                 Text(
                     text = data.title,
                     fontSize = 36.sp,
+                    lineHeight = 38.sp,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .padding(bottom = 5.dp, start = 20.dp)
@@ -97,7 +103,7 @@ fun DetailScreen(
                         modifier = Modifier.padding(end = 4.dp),
                         imageVector = Icons.Default.Star,
                         contentDescription = "rating",
-                        tint = Color.Yellow
+                        tint = if(isSystemInDarkTheme()) AccentColor else TextColorDark
                     )
                     Text(text = data.rating.toString())
                 }
@@ -157,7 +163,6 @@ fun DetailScreen(
                     .height(100.dp)
                     .padding(top = 20.dp)
                     .padding(horizontal = 30.dp),
-                verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -170,13 +175,14 @@ fun DetailScreen(
                 Button(
                     onClick = { /*TODO*/ },
                     modifier = Modifier
-                        .wrapContentSize()
+                        .wrapContentSize(),
+                    colors = ButtonDefaults.buttonColors(Tertiary)
                 ) {
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 10.dp),
                         fontSize = 14.sp,
-                        text = "Добавить в корзину"
+                        text = stringResource(id = R.string.add_at_button_label)
                     )
                 }
             }

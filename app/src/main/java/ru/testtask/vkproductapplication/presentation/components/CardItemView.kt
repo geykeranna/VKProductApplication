@@ -15,17 +15,21 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import ru.testtask.vkproductapplication.R
 import ru.testtask.vkproductapplication.domain.models.Product
+import ru.testtask.vkproductapplication.ui.theme.Tertiary
+import ru.testtask.vkproductapplication.ui.theme.TextColorDark
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,7 +44,7 @@ fun CardItemView(
             .wrapContentHeight()
             .padding(5.dp)
             .clip(RoundedCornerShape(20.dp))
-            .border(2.dp, Color.Gray, RoundedCornerShape(20.dp))
+            .border(2.dp, Tertiary, RoundedCornerShape(20.dp))
             .clickable { onClick?.invoke() },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.SpaceEvenly
@@ -49,9 +53,9 @@ fun CardItemView(
             Box(
                 modifier = Modifier
                     .wrapContentSize()
-                    .clip(RoundedCornerShape(10.dp))
                     .padding(top = 14.dp, start = 10.dp)
-                    .background(Color.Blue),
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Tertiary),
                 contentAlignment = Alignment.Center,
             ){
                 Text(
@@ -59,6 +63,7 @@ fun CardItemView(
                         .padding(horizontal = 4.dp),
                     text = "${item.discountPercentage}%",
                     fontSize = 12.sp,
+                    color = TextColorDark
                 )
             }
         }
@@ -100,11 +105,12 @@ fun CardItemView(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(horizontal = 6.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(Tertiary)
             ) {
                 Text(
                     modifier = Modifier,
                     fontSize = 12.sp,
-                    text = "Добавить"
+                    text = stringResource(id = R.string.add_button_label)
                 )
             }
         }

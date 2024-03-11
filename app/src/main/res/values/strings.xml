@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">VK Products</string>
     <string name="description_label">Описание</string>
+    <string name="add_button_label">Добавить</string>
+    <string name="add_at_button_label">Добавить в корзину</string>
+    <string name="search_placeholder">Поиск</string>
 </resources>

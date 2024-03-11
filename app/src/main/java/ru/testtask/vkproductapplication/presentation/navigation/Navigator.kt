@@ -1,6 +1,5 @@
 package ru.testtask.vkproductapplication.presentation.navigation
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -58,16 +57,16 @@ fun Navigator() {
                     navigateToDetails = {item ->
                         navigateToDetails(
                             navController = navController,
-                            item = item
+                            item = item,
                         )
-                    }
+                    },
+                    navigateBack = { navController.navigateUp() }
                 )
             }
             composable(route = Route.DetailScreen.route) {
                 val viewModel: DetailScreenViewModel = hiltViewModel()
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("id_product")
                     ?.let {item ->
-                        Log.d("fndvbskhekjlfhd", item.toString())
                         viewModel.onEvent(DetailEvent.GetOneProduct(item))
                         viewModel.state?.let { state ->
                             DetailScreen(

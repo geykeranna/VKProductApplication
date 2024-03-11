@@ -33,7 +33,10 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 @Composable
-fun EmptyScreen(error: LoadState.Error? = null) {
+fun EmptyScreen(
+    error: LoadState.Error? = null,
+    isEmpty: Boolean = false
+) {
     var message by remember {
         mutableStateOf(parseErrorMessage(error = error))
     }
@@ -42,8 +45,8 @@ fun EmptyScreen(error: LoadState.Error? = null) {
         mutableIntStateOf(R.drawable.ic_network_error)
     }
 
-    if (error == null){
-        message = "Сейчас все нахимичим!"
+    if (error == null && !isEmpty){
+        message = if (isEmpty) "Пусто......" else "Сейчас все нахимичим!"
         icon = R.drawable.ic_search_document
     }
 

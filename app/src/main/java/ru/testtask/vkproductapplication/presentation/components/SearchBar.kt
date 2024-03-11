@@ -1,12 +1,13 @@
 package ru.testtask.vkproductapplication.presentation.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -20,18 +21,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.testtask.vkproductapplication.R
-import ru.testtask.vkproductapplication.ui.theme.VKProductApplicationTheme
+import ru.testtask.vkproductapplication.ui.theme.SecondaryColor
+import ru.testtask.vkproductapplication.ui.theme.Tertiary
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
@@ -53,13 +55,14 @@ fun SearchBar(
             }
     }
 
-    Box(modifier = modifier) {
+    Box(modifier =
+        modifier.padding(horizontal = 5.dp)
+    ) {
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .searchBar()
                 .clip(RoundedCornerShape(20.dp))
-                .border(2.dp, Color.Gray, RoundedCornerShape(20.dp)),
+                .border(2.dp, Tertiary, RoundedCornerShape(20.dp)),
             value = text,
             onValueChange = onValueChange,
             readOnly = readOnly,
@@ -67,15 +70,15 @@ fun SearchBar(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(16.dp),
                 )
             },
             placeholder = {
                 Text(
-                    text = "Поиск",
-                    fontSize = 22.sp,
+                    text = stringResource(id = R.string.search_placeholder),
+                    fontSize = 18.sp,
                     style = MaterialTheme.typography.bodySmall,
-                    color = colorResource(id = R.color.placeholder)
+                    color = Color.Gray
                 )
             },
             colors = TextFieldDefaults.colors(
@@ -84,6 +87,7 @@ fun SearchBar(
                 errorIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = if (isSystemInDarkTheme()) Color.Transparent else SecondaryColor
             ),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -92,33 +96,11 @@ fun SearchBar(
                     onSearch()
                 }
             ),
-            textStyle = MaterialTheme.typography.bodySmall,
+            textStyle = TextStyle(
+                fontSize = 18.sp,
+            ),
             interactionSource = interactionSource
         )
-    }
-}
-
-fun Modifier.searchBar(): Modifier = composed {
-    if (!isSystemInDarkTheme()) {
-        border(
-            width = 1.dp,
-            color = Color.Black,
-            shape = MaterialTheme.shapes.medium
-        )
-    } else {
-        this
-    }
-}
-
-@Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun SearchBarPreview() {
-    VKProductApplicationTheme {
-        SearchBar(text = "",
-            onValueChange = {},
-            readOnly = false
-        ) {}
     }
 }
 
