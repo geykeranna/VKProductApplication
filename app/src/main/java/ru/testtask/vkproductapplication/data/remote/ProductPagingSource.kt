@@ -9,7 +9,6 @@ class ProductPagingSource(
     private val productsApi: ProductsApi
 ): PagingSource<Int, Product>() {
     private val limit: Int = DEFAULT_LIMIT_ON_PAGE
-    private var totalCount = 0
 
     override fun getRefreshKey(state: PagingState<Int, Product>): Int? {
         return state.anchorPosition?.let {
@@ -22,10 +21,10 @@ class ProductPagingSource(
         val page = params.key ?: 1
         return try {
             val prodResponse = productsApi.getProducts(limit = limit, skip = (page - 1) * limit)
-            totalCount += prodResponse.products.size
+
             LoadResult.Page(
                 data = prodResponse.products,
-                nextKey = if (totalCount >= prodResponse.total) null else page + 1,
+                nextKey = if (prodResponse.limit + prodResponse.skip >= prodResponse.total) null else page + 1,
                 prevKey = null
             )
         } catch (e: Exception){
